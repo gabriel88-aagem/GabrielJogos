@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GabrielJogos</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="jogos.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div id="tela-menu" class="page">
+    <header>
+      <h1 class="logo">GabrielJogos</h1>
+    </header>
+    <main>
+      <div id="games-grid" class="games-grid"></div>
+    </main>
+  </div>
+
+  <div id="tela-jogo" class="tela-jogo hidden">
+    <div class="jogo-header">
+      <button onclick="voltarMenu()">← Voltar</button>
+      <span id="jogo-titulo"></span>
+    </div>
+    <iframe id="jogo-frame" src="" frameborder="0"></iframe>
+  </div>
+
+  <script>
+    async function lerArquivo(nome, arquivo) {
+      try {
+        const res = await fetch(`jogos/${nome}/${arquivo}`);
+        if (res.ok) return await res.text();
+      } catch {}
+      return '';
+    }
+
+    async function carregarJogos() {
+      const grid = document.getElementById('games-grid');
+      grid.innerHTML = '';
+
+      if (!JOGOS || JOGOS.length === 0) {
+        grid.innerHTML = '<p class="carregando">Nenhum jogo encontrado.</p>';
+        return;
+      }
+
+      for (const jogo of JOGOS) {
+        const nome      = typeof jogo === 'string' ? jogo : jogo.nome;
+        const descricao = await lerArquivo(nome, 'Descricao.txt');
+        const info      = await lerArquivo(nome, 'Informacoes.txt');
+
+        const infoHTML = info
+          ? info.trim().split('\n').map(l => `<span>${l.trim()}</span>`).join('')
+          : '';
+
+        const card = document.createElement('div');
+        card.className = 'game-card';
+
+        const btn = document.createElement('button');
+        btn.className = 'btn-play';
+        btn.textContent = '▶ Jogar';
+        btn.addEventListener('click', () => abrirJogo(nome));
+
+        card.innerHTML = `
+          <div class="card-thumb">
+            <img src="jogos/${nome}/Thumbnail.png" alt="${nome}"
+              onerror="this.style.display='none'" />
+          </div>
+          <div class="card-info">
+            <h2>${nome}</h2>
+            ${descricao ? `<p class="card-descricao">${descricao.trim()}</p>` : ''}
+            ${infoHTML   ? `<div class="card-info-tags">${infoHTML}</div>` : ''}
+          </div>
+        `;
+        card.querySelector('.card-info').appendChild(btn);
+        grid.appendChild(card);
+      }
+    }
+
+    function abrirJogo(nome) {
+      document.getElementById('tela-menu').classList.add('hidden');
+      document.getElementById('tela-jogo').classList.remove('hidden');
+      document.getElementById('jogo-titulo').textContent = nome;
+      document.getElementById('jogo-frame').src = `jogos/${nome}/Jogo.html`;
+    }
+
+    function voltarMenu() {
+      document.getElementById('tela-jogo').classList.add('hidden');
+      document.getElementById('tela-menu').classList.remove('hidden');
+      document.getElementById('jogo-frame').src = '';
+    }
+
+    carregarJogos();
+  </script>
+</body>
+</html>
