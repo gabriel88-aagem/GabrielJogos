@@ -1,6 +1,6 @@
 const JOGOS = [
   "Cofrinho 88",
-  "Ó GATINHA RÓXA",
+  "O GATINHA ROXA",
   "Adivinhar",
   "BetRun",
   "CattoVerse",
