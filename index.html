@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GabrielJogos</title>
+  <title>GabrielJogos. jogos de papeis</title>
   <link rel="stylesheet" href="style.css" />
   <script src="jogos.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
@@ -12,7 +12,9 @@
 
   <div id="tela-menu" class="page">
     <header>
-      <h1 class="logo">GabrielJogos</h1>
+      <div class="header-top">
+        <h1 class="logo">GabrielJogos. jogos de papeis</h1>
+      </div>
     </header>
     <main>
       <div id="games-grid" class="games-grid"></div>
@@ -30,7 +32,7 @@
   <script>
     async function lerArquivo(nome, arquivo) {
       try {
-        const res = await fetch(`jogos/${nome}/${arquivo}`);
+        const res = await fetch('jogos/' + nome + '/' + arquivo);
         if (res.ok) return await res.text();
       } catch {}
       return '';
@@ -39,41 +41,36 @@
     async function carregarJogos() {
       const grid = document.getElementById('games-grid');
       grid.innerHTML = '';
-
       if (!JOGOS || JOGOS.length === 0) {
         grid.innerHTML = '<p class="carregando">Nenhum jogo encontrado.</p>';
         return;
       }
-
       for (const jogo of JOGOS) {
         const nome      = typeof jogo === 'string' ? jogo : jogo.nome;
         const descricao = await lerArquivo(nome, 'Descricao.txt');
         const info      = await lerArquivo(nome, 'Informacoes.txt');
-
-        const infoHTML = info
-          ? info.trim().split('\n').map(l => `<span>${l.trim()}</span>`).join('')
-          : '';
+        const infoHTML  = info ? info.trim().split('\n').map(l => '<span>' + l.trim() + '</span>').join('') : '';
 
         const card = document.createElement('div');
         card.className = 'game-card';
 
-        const btn = document.createElement('button');
-        btn.className = 'btn-play';
-        btn.textContent = '▶ Jogar';
-        btn.addEventListener('click', () => abrirJogo(nome));
+        const btnJogar = document.createElement('button');
+        btnJogar.className = 'btn-play';
+        btnJogar.textContent = '▶ Jogar';
+        btnJogar.addEventListener('click', () => abrirJogo(nome));
 
-        card.innerHTML = `
-          <div class="card-thumb">
-            <img src="jogos/${nome}/Thumbnail.png" alt="${nome}"
-              onerror="this.style.display='none'" />
-          </div>
-          <div class="card-info">
-            <h2>${nome}</h2>
-            ${descricao ? `<p class="card-descricao">${descricao.trim()}</p>` : ''}
-            ${infoHTML   ? `<div class="card-info-tags">${infoHTML}</div>` : ''}
-          </div>
-        `;
-        card.querySelector('.card-info').appendChild(btn);
+        card.innerHTML =
+          '<div class="card-thumb">' +
+            '<img src="jogos/' + nome + '/Thumbnail.png" alt="' + nome + '" onerror="this.style.display=\'none\'" />' +
+          '</div>' +
+          '<div class="card-info">' +
+            '<h2>' + nome + '</h2>' +
+            (descricao ? '<p class="card-descricao">' + descricao.trim() + '</p>' : '') +
+            (infoHTML ? '<div class="card-info-tags">' + infoHTML + '</div>' : '') +
+            '<div class="card-buttons"></div>' +
+          '</div>';
+
+        card.querySelector('.card-buttons').appendChild(btnJogar);
         grid.appendChild(card);
       }
     }
@@ -82,7 +79,7 @@
       document.getElementById('tela-menu').classList.add('hidden');
       document.getElementById('tela-jogo').classList.remove('hidden');
       document.getElementById('jogo-titulo').textContent = nome;
-      document.getElementById('jogo-frame').src = `jogos/${nome}/Jogo.html`;
+      document.getElementById('jogo-frame').src = 'jogos/' + nome + '/Jogo.html';
     }
 
     function voltarMenu() {

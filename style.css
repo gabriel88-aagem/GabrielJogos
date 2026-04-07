@@ -7,25 +7,25 @@ body {
   color: #fff;
 }
 
-/* UTILITÁRIO */
 .hidden { display: none !important; }
 
-/* ── MENU ── */
-.page {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 40px 24px;
-}
+.page { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
 
-header { text-align: center; margin-bottom: 40px; }
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+}
 
 .logo {
   font-family: 'Fredoka One', cursive;
-  font-size: 3rem;
+  font-size: 2.2rem;
   color: #C9A8FF;
   letter-spacing: 2px;
   text-shadow: 3px 3px 0px rgba(0,0,0,0.25);
   animation: bounce-in 0.5s ease;
+  text-align: center;
 }
 
 @keyframes bounce-in {
@@ -34,14 +34,12 @@ header { text-align: center; margin-bottom: 40px; }
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* ── GRID DE JOGOS ── */
 .games-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 24px;
 }
 
-/* ── CARD ── */
 .game-card {
   background: #fff;
   border: 3px solid #E060C8;
@@ -58,18 +56,9 @@ header { text-align: center; margin-bottom: 40px; }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.game-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 4px 10px 0px #9a2c85;
-}
+.game-card:hover { transform: translateY(-6px); box-shadow: 4px 10px 0px #9a2c85; }
 
-.card-thumb img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  display: block;
-}
-
+.card-thumb img { width: 100%; height: 150px; object-fit: cover; display: block; }
 .card-info { padding: 14px 16px 18px; }
 
 .card-info h2 {
@@ -79,49 +68,28 @@ header { text-align: center; margin-bottom: 40px; }
   margin-bottom: 6px;
 }
 
-.card-info p {
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 14px;
-  line-height: 1.4;
-}
+.card-descricao { font-size: 0.85rem; color: #555; margin-bottom: 10px; line-height: 1.4; }
+.card-info-tags { display: flex; flex-direction: column; gap: 2px; margin-bottom: 12px; }
+.card-info-tags span { font-size: 0.78rem; color: #888; font-style: italic; }
+.card-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
 
 .btn-play {
-  display: inline-block;
-  padding: 8px 22px;
+  padding: 8px 18px;
   background: #E060C8;
   color: #fff;
   font-family: 'Fredoka One', cursive;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   border: none;
   border-radius: 50px;
   cursor: pointer;
   transition: background 0.2s, transform 0.1s;
 }
+.btn-play:hover { background: #9a2c85; transform: scale(1.05); }
 
-.btn-play:hover {
-  background: #9a2c85;
-  transform: scale(1.05);
-}
-
-/* ── MENSAGENS ── */
-.carregando {
-  color: #C9A8FF;
-  font-size: 1rem;
-  text-align: center;
-  padding: 40px;
-  grid-column: 1 / -1;
-}
-
+.carregando { color: #C9A8FF; font-size: 1rem; text-align: center; padding: 40px; grid-column: 1 / -1; }
 .carregando.erro { color: #ff9999; }
 
-/* ── TELA DE JOGO ── */
-.tela-jogo {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background: #1a3a5c;
-}
+.tela-jogo { display: flex; flex-direction: column; height: 100vh; background: #1a3a5c; }
 
 .jogo-header {
   display: flex;
@@ -143,7 +111,6 @@ header { text-align: center; margin-bottom: 40px; }
   cursor: pointer;
   transition: background 0.2s;
 }
-
 .jogo-header button:hover { background: #9a2c85; }
 
 .jogo-header span {
@@ -152,35 +119,9 @@ header { text-align: center; margin-bottom: 40px; }
   color: #C9A8FF;
 }
 
-#jogo-frame {
-  flex: 1;
-  width: 100%;
-  border: none;
-}
+#jogo-frame { flex: 1; width: 100%; border: none; }
 
-/* ── RESPONSIVO ── */
 @media (max-width: 480px) {
-  .logo { font-size: 2.2rem; }
+  .logo { font-size: 1.6rem; }
   .games-grid { grid-template-columns: 1fr; }
-}
-
-/* ── DESCRIÇÃO E INFORMAÇÕES ── */
-.card-descricao {
-  font-size: 0.85rem;
-  color: #555;
-  margin-bottom: 10px;
-  line-height: 1.4;
-}
-
-.card-info-tags {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-bottom: 12px;
-}
-
-.card-info-tags span {
-  font-size: 0.78rem;
-  color: #888;
-  font-style: italic;
 }
